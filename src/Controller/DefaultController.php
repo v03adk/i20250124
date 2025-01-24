@@ -12,7 +12,7 @@ final class DefaultController extends AbstractController
     public function index(): Response
     {
         return $this->render('default/index.html.twig', [
-            'controller_name' => 'DefaultController',
+            'screen_1' => $this->renderView('api/screen_1.html.twig'),
         ]);
     }
 }

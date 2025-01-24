@@ -19,17 +19,27 @@
         httpRequest.open('POST', 'http://i20250124.local/api/screen/' + screenIndex);
         httpRequest.send();
       }
+
+      function showScreen(screenIndex) {
+        document.querySelector('#screen' + screenIndex).style.display = 'block';
+
+      }
     </script>
 {% endblock %}
 
 {% block sidebar %}
     <ul class="sidebar">
-        <li><a href="#screen1" onclick="loadScreen(1);">Screen 1</a></li>
-        <li><a href="#screen2" onclick="loadScreen(2);">Screen 2</a></li>
-        <li><a href="#screen3" onclick="loadScreen(3);">Screen 3</a></li>
+        <li><a href="#screen1" onclick="showScreen(1);">Screen 1</a></li>
+        <li><a href="#screen2" onclick="showScreen(2);">Screen 2</a></li>
+        <li><a href="#screen3" onclick="showScreen(3);">Screen 3</a></li>
     </ul>
 {% endblock %}
 
 {% block content %}
     <div id="result"></div>
+
+
+    <div id="screen1" style="display: none">
+        {{ screen_1|raw }}
+    </div>
 {% endblock %}

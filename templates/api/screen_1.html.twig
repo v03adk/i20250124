@@ -1,0 +1,70 @@
+<div class="search-container">
+    <input type="text" id="search-box" placeholder="Search...">
+</div>
+
+<div class="results-container">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody id="results-body">
+        </tbody>
+        <!-- Example rows -->
+    </table>
+</div>
+
+<script>
+  (function() {
+    const searchBox = document.getElementById('search-box');
+    let timeout = null;
+
+    const sendSearchRequest = () => {
+      const searchText = searchBox.value;
+      const resultsBody = document.getElementById('results-body');
+
+      if (searchText.trim() !== '') {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'api/screenone');
+        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log('Search response:', xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
+
+            // Clear previous results
+            resultsBody.innerHTML = '';
+
+            // Populate results table
+            response.forEach(item => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                                    <td>${item.id}</td>
+                                    <td>${item.title}</td>
+                                    <td>${item.status}</td>
+                                    <td>${item.notes}</td>
+                                `;
+              resultsBody.appendChild(row);
+            });
+          }
+        };
+
+        xhr.send(JSON.stringify({ query: searchText }));
+      }
+    };
+
+    searchBox.addEventListener('keyup', function(event) {
+      clearTimeout(timeout);
+      if (event.key === 'Enter') {
+        sendSearchRequest();
+      } else {
+        timeout = setTimeout(sendSearchRequest, 300);
+      }
+    });
+  })();
+</script>
