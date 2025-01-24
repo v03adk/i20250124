@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DefaultController!{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+      function loadScreen(screenIndex) {
+        let httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function() {
+          // Process the server response here.
+          if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+              document.getElementById('result').innerHTML = httpRequest.responseText;
+            } else {
+              document.getElementById('result').innerHTML = 'There was a problem with the request.';
+            }
+          }
+        }
+        httpRequest.open('POST', 'http://i20250124.local/api/screen/' + screenIndex);
+        httpRequest.send();
+      }
+    </script>
+{% endblock %}
+
+{% block sidebar %}
+    <ul class="sidebar">
+        <li><a href="#screen1" onclick="loadScreen(1);">Screen 1</a></li>
+        <li><a href="#screen2" onclick="loadScreen(2);">Screen 2</a></li>
+        <li><a href="#screen3" onclick="loadScreen(3);">Screen 3</a></li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div id="result"></div>
+{% endblock %}
